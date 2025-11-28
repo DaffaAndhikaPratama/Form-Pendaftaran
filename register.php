@@ -1,6 +1,6 @@
 <?php
 include 'db.php';
-$massage = "";
+$message = ""; 
 
 if (isset($_POST['register'])) {
     $username = clean_input($conn, $_POST['username']);
@@ -12,15 +12,15 @@ if (isset($_POST['register'])) {
     $check_query = "SELECT * FROM users WHERE username='$username' OR email='$email'";
     $check_result = mysqli_query($conn, $check_query);
     if (mysqli_num_rows($check_result) > 0) {
-        $massage = "<div class='alert alert-danger' role='alert'>Username atau email sudah terdaftar.</div>";
+        $message = "<div class='alert alert-danger' role='alert'>Username atau email sudah terdaftar.</div>";
     } else {
         $sql = "INSERT INTO users (username, email, password) VALUES ('$username', '$email', '$hashed_password')";
-        // ... di dalam logika POST['register']
+        
         if (mysqli_query($conn, $sql)) {
             header("Location: login.php?status=success");
-            exit(); // Penting untuk menghentikan eksekusi script selanjutnya
+            exit(); 
         } else {
-            $massage = "<div class='alert alert-danger' role='alert'>Error: " . mysqli_error($conn) . "</div>";
+            $message = "<div class='alert alert-danger' role='alert'>Error: " . mysqli_error($conn) . "</div>";
         }
     }
 }
@@ -31,51 +31,59 @@ if (isset($_POST['register'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Daftar Akun</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
     <style>
-        body {
-            background-color: #f8f9fa;
+        body { 
+            background-color: #f4f7fa; 
+            min-height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
         }
-        .container {
-            max-width: 400px;
-            margin-top: 50px;
-            padding: 20px;
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        .register-container { 
+            max-width: 400px; 
+            padding: 40px; 
+            border-radius: 12px; 
+            background-color: #fff; 
+            box-shadow: 0 10px 30px rgba(0,0,0,.08); 
         }
-        </style>
+        .btn-success {
+            background-color: #28a745; 
+            border-color: #28a745;
+        }
+        .btn-success:hover {
+            background-color: #1e7e34;
+            border-color: #1e7e34;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <div class="register-container">
-            <h2 class="text-center mb-4">Daftar Akun Baru</h2>
-            <?php echo $massage; 
-            if (isset($_GET['status']) && $_GET['status'] == 'success') {
-                echo "<div class='alert alert-success text-center'>Pendaftaran berhasil! Silakan masuk dengan akun Anda.</div>";
-            }
-            ?>
+            <h2 class="text-center mb-4 text-success fw-bold">Buat Akun Baru</h2>
+            <?php echo $message; ?>
             
             <form method="POST" action="">
                 <div class="mb-3">
-                    <label for="username" class="form-label"></label>
-                    <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
+                    <label for="username" class="form-label text-muted">Username</label>
+                    <input type="text" class="form-control form-control-lg" id="username" name="username" placeholder="Username" required>
                 </div>
                 <div class="mb-3">
-                    <label for="email" class="form-label"></label>
-                    <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+                    <label for="email" class="form-label text-muted">Email</label>
+                    <input type="email" class="form-control form-control-lg" id="email" name="email" placeholder="Email" required>
                 </div>
                 <div class="mb-3">
-                    <label for="password" class="form-label"></label>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                    <label for="password" class="form-label text-muted">Password</label>
+                    <input type="password" class="form-control form-control-lg" id="password" name="password" placeholder="Password" required>
                 </div>
-                <button type="submit" name="register" class="btn btn-primary w-100">Daftar</button>
+                <button type="submit" name="register" class="btn btn-success btn-lg w-100 mt-3">Daftar</button>
             </form>
-            <p class="text-center mt-3">Sudah punya akun? <a href="login.php">Login di sini</a></p>
+            
+            <p class="mt-4 text-center text-muted">Sudah punya akun? <a href="login.php" class="text-decoration-none">Login di sini</a></p>
         </div>
     </div>
-    <script scr="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-    
