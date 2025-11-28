@@ -33,7 +33,7 @@ if (isset($_POST['upload_file'])) {
         } elseif (!in_array($file_type, $allowed_types)) {
             $message = "<div class='alert alert-danger'>Tipe file tidak diizinkan (Hanya JPG, PNG, PDF).</div>";
         } else {
-            // Amankan nama file dengan menambahkan user_id dan timestamp
+            // Amankan nama file dengan menambahkan user_id dan timestamp (Kunci pemisahan akun)
             $new_file_name = $user_id . '_' . time() . '_' . $file_name;
             $destination = $upload_dir . $new_file_name;
 
@@ -105,6 +105,9 @@ $files_result = mysqli_query($conn, $files_sql);
                 <p class="mb-0 text-muted">Kelola semua unggahan file Anda di sini.</p>
             </div>
             <div>
+                <a href="profile.php" class="btn btn-sm text-white btn-primary me-2">
+                    <i class="bi bi-person-circle"></i> Profil
+                </a>
                 <a href="logout.php" class="btn btn-sm text-white btn-logout">
                     <i class="bi bi-box-arrow-right"></i> Logout
                 </a>
