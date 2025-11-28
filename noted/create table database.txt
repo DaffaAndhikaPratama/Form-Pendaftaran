@@ -1,0 +1,38 @@
+create table database
+table users :
+
+CREATE TABLE users (
+    id INT(11) AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL, -- Pastikan kolom cukup besar untuk menyimpan hash
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+table uploads :
+CREATE TABLE uploads (
+    id INT(11) PRIMARY KEY AUTO_INCREMENT,
+    user_id INT(11) NOT NULL,
+    file_name VARCHAR(255) NOT NULL,
+    stored_name VARCHAR(255) NOT NULL,
+    file_size INT(11) NOT NULL,
+    file_type VARCHAR(50) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+table view :
+CREATE VIEW user_uploads_view AS
+SELECT
+    u.id AS user_id,
+    u.username,
+    t.id AS upload_id,
+    t.file_name,
+    t.stored_name,
+    t.file_size,
+    t.file_type,
+    t.created_at
+FROM
+    users u
+JOIN
+    uploads t ON u.id = t.user_id;
